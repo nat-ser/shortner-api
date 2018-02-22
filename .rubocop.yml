@@ -1,0 +1,10 @@
+# inherit_from: .rubocop_todo.yml
+
+AllCops:
+  TargetRubyVersion: 2.4.2
+  Exclude:
+    - spec/spec_helper.rb
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+  Enabled: true
