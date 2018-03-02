@@ -1,24 +1,25 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+url
+- full_address: string, null: false
 
-Things you may want to cover:
+has_many :shortened_urls
 
-* Ruby version
+shortened_url
+validates :uniqueness, true
 
-* System dependencies
+- address: string, null: false
+- device_type: string,  null: false
+- number_of_redirects: integer, default: 0
 
-* Configuration
+def time_since_creation
+end
 
-* Database creation
+belongs_to :url
 
-* Database initialization
 
-* How to run the test suite
 
-* Services (job queues, cache servers, search engines, etc.)
 
-* Deployment instructions
+don't make device a separate model bc only 3 types
 
-* ...
+http://edgeguides.rubyonrails.org/api_app.html

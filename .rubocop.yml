@@ -1,10 +1,23 @@
-# inherit_from: .rubocop_todo.yml
-
 AllCops:
   TargetRubyVersion: 2.4.2
   Exclude:
     - spec/spec_helper.rb
+    - spec/rails_helper.rb
+    - db/seeds.rb
+    - Gemfile
+    - config/**/*
+    - bin/*
+    - Rakefile
+    - config.ru
+    - app/models/application_record.rb
+    - app/controllers/application_controller.rb
+    - db/schema.rb
+    - db/migrate/*
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes
   Enabled: true
+
+Style/Documentation:
+  Exclude:
+    - app/controllers/*
