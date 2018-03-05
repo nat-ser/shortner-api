@@ -21,3 +21,7 @@ Style/StringLiterals:
 Style/Documentation:
   Exclude:
     - app/controllers/*
+
+Metrics/BlockLength:
+  Exclude:
+    - spec/**/*

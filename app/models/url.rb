@@ -15,5 +15,11 @@
 
 # target url
 class Url < ApplicationRecord
-  belongs_to :short_url
+  belongs_to :short_url, optional: true
+
+  validates :full_address, :device_type, presence: true
+
+  def shortened
+    id.to_s(36)
+  end
 end
