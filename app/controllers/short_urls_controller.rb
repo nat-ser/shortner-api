@@ -3,7 +3,7 @@
 class ShortUrlsController < ApplicationController
   def create
     url = Url.create!(url_params)
-    short_url = ShortUrl.for_url(url)
+    short_url = ShortUrl.for_url(url).first
     if short_url.present?
       url.short_url = short_url
       json_response(short_url)
@@ -13,6 +13,10 @@ class ShortUrlsController < ApplicationController
       json_response(short_url, :created)
     end
   end
+
+  def index; end
+
+  def show; end
 
   private
 
