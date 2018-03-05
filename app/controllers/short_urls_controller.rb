@@ -20,7 +20,8 @@ class ShortUrlsController < ApplicationController
 
   def show
     short_url = ShortUrl.find_by!(short_address: params[:friendly_id])
-    url = short_url.urls.find {|x| x.device_type == request.variant.first.to_s }
+    device_type = request.variant.first.to_s
+    url = short_url.urls.find { |x| x.device_type == device_type }
     url.redirect_count += 1
     redirect_to url.full_address, status: :moved_permanently
   end
@@ -32,19 +33,19 @@ class ShortUrlsController < ApplicationController
   end
 
   def detect_device_format
-    case request.user_agent
-    when /iPad/i
-      request.variant = :tablet
-    when /iPhone/i
-      request.variant = :mobile
-    when /Android/i && /mobile/i
-      request.variant = :mobile
-    when /Android/i
-      request.variant = :tablet
-    when /Windows Phone/i
-      request.variant = :mobile
-    else
-      request.variant = :desktop
-    end
+    request.variant = case request.user_agent
+                      when /iPad/i
+                        :tablet
+                      when /iPhone/i
+                        :mobile
+                      when /Android/i && /mobile/i
+                        :mobile
+                      when /Android/i
+                        :tablet
+                      when /Windows Phone/i
+                        :mobile
+                      else
+                        :desktop
+                      end
   end
 end

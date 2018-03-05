@@ -8,7 +8,7 @@ describe "Short Url API", type: :request do
 
   describe "POST /short_urls" do
     let(:valid_attributes) do
-      { full_address: "https://jooraccess.com/" , device_type: "mobile" }
+      { full_address: "https://jooraccess.com/", device_type: "mobile" }
     end
 
     context "when the request is valid and there is no existing short url" do
@@ -64,7 +64,7 @@ describe "Short Url API", type: :request do
       let(:friendly_id) { "1" }
 
       it "returns the url" do
-        request.env['HTTP_USER_AGENT'] = "iPhone"
+        request.env["HTTP_USER_AGENT"] = "iPhone"
         expect(response).to redirect_to("https://jooraccess.com/")
       end
 
@@ -74,7 +74,7 @@ describe "Short Url API", type: :request do
     end
 
     context "when the record does not exist" do
-      let(:friendly_id) { "404short"}
+      let(:friendly_id) { "404short" }
 
       it "returns status code 404" do
         expect(response).to have_http_status(404)
