@@ -13,6 +13,5 @@ FactoryBot.define do
     id { 1 }
     full_address { "https://jooraccess.com/" }
     device_type { "desktop" }
-    short_url { short_url_with_desktop_targets.shorten }
   end
 end
