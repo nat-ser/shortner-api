@@ -16,7 +16,14 @@ class ShortUrlsController < ApplicationController
     end
   end
 
-  def index; end
+  def index
+    short_urls = ShortUrl.all
+    if short_urls.empty?
+      json_response(short_urls, :no_content)
+    else
+      json_response(short_urls)
+    end
+  end
 
   def show
     short_url = ShortUrl.find_by!(short_address: params[:friendly_id])

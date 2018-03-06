@@ -15,6 +15,7 @@ describe "Short Url API", type: :request do
       before { post "/short_urls", params: valid_attributes }
 
       it "creates a short url" do
+        # `json` is a custom helper to parse JSON responses
         expect(json["short_address"]).to eq(Url.last.shortened)
       end
 
@@ -53,9 +54,10 @@ describe "Short Url API", type: :request do
   end
 
   describe "GET /:friendly_id" do
+    let(:short_url_with_one_target) { create(:short_url_with_targets) }
+    let(:mobile_url) { create(:url, id: 2, device_type: "mobile") }
+
     before do
-      short_url_with_one_target = create(:short_url_with_targets)
-      mobile_url = create(:url, id: 2, device_type: "mobile")
       short_url_with_one_target.urls << mobile_url
       get "/#{friendly_id}"
     end
@@ -82,6 +84,46 @@ describe "Short Url API", type: :request do
 
       it "returns a not found message" do
         expect(response.body).to match(/Couldn't find ShortUrl/)
+      end
+    end
+  end
+
+  describe "GET /short_urls" do
+    context "when the records exist" do
+      before do
+        (1..4).to_a.each do |id|
+          desktop_url = create(
+            :url, id: id,
+            full_address: Faker::Internet.url,
+            device_type: "desktop"
+          )
+          mobile_url = create(
+            :url,
+            id: (id + 10),
+            full_address: Faker::Internet.url,
+            device_type: "mobile"
+          )
+          shortened_url = create(:short_url, short_address: desktop_url.shortened)
+          shortened_url.urls << mobile_url
+          shortened_url.urls << desktop_url
+        end
+       get "/short_urls"
+      end
+
+      it "returns shorened urls" do
+        expect(json).not_to be_empty
+        expect(json.size).to eq(4)
+      end
+
+      it "returns status code 200" do
+        expect(response).to have_http_status(200)
+      end
+    end
+
+    context "when no records exist" do
+      it "returns status code 204" do
+        get "/short_urls"
+        expect(response).to have_http_status(204)
       end
     end
   end
