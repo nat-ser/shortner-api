@@ -25,8 +25,4 @@ class ShortUrl < ApplicationRecord
   def self.for_url(url)
     joins(:urls).where(urls: { full_address: url.full_address })
   end
-
-  def hours_since_creation
-    (Time.now - created_at.to_time)/1.hour
-  end
 end

@@ -7,17 +7,21 @@ module Api::V1
       url = Url.create!(url_params)
       short_url = ShortUrl.for_url(url).first
       if short_url.present?
+        # TODO fix this awkward association
         url.short_url = short_url
+        short_url.urls << url
         json_response(short_url)
       else
         short_address = url.shortened
         short_url = ShortUrl.create(short_address: short_address)
+        # TODO fix this awkward association
+        url.short_url = short_url
+        short_url.urls << url
         json_response(short_url, :created)
       end
     end
 
     def index
-      binding.pry
       short_urls = ShortUrl.all
       if short_urls.empty?
         json_response(short_urls, :no_content)

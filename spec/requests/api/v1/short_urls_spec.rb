@@ -12,11 +12,18 @@ describe "Short Url API", type: :request do
     end
 
     context "when the request is valid and there is no existing short url" do
-      before { post short_urls_path, params: valid_attributes }
+      before { post api_v1_short_urls_path, params: valid_attributes }
 
       it "creates a short url" do
         # `json` is a custom helper to parse JSON responses
         expect(json["short_address"]).to eq(Url.last.shortened)
+      end
+
+      it "creates an association between created url and shortened url" do
+        url = Url.last
+        short_url = ShortUrl.last
+        expect(url.short_url).to eq(short_url)
+        expect(short_url.urls.include?(url)).to eq(true)
       end
 
       it "returns status code 201" do
@@ -27,7 +34,7 @@ describe "Short Url API", type: :request do
     context "when the request is valid and there is an existing short url" do
       before do
         create(:short_url_with_targets)
-        post short_urls_path, params: valid_attributes
+        post api_v1_short_urls_path, params: valid_attributes
       end
 
       it "creates a short url" do
@@ -40,7 +47,7 @@ describe "Short Url API", type: :request do
     end
 
     context "when the request is invalid" do
-      before { post short_urls_path, params: { device_type: "mobile" } }
+      before { post api_v1_short_urls_path, params: { device_type: "mobile" } }
 
       it "returns status code 422" do
         expect(response).to have_http_status(422)
@@ -61,7 +68,7 @@ describe "Short Url API", type: :request do
       short_url_with_one_target.urls << mobile_url
       # request.env["HTTP_USER_AGENT"] = "iPhone"
       # get(friendly_path(friendly_id), nil, "HTTP_USER_AGENT": "iPhone")
-      get(friendly_path(friendly_id))
+      get(api_v1_friendly_path(friendly_id))
     end
 
     context "when the record exists" do
