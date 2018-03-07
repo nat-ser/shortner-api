@@ -21,7 +21,7 @@ describe "Short Url API", type: :request do
       end
 
       it "creates an association between created url and shortened url" do
-        url = Url.find_by(full_address: full_address)
+        url = Url.find_by(full_address: full_address, device_type: "mobile")
         short_url = ShortUrl.last
         expect(url.short_url).to eq(short_url)
         expect(short_url.urls.include?(url)).to eq(true)
@@ -84,6 +84,11 @@ describe "Short Url API", type: :request do
       let(:friendly_id) { "1" }
 
       it "redirects to the target url" do
+        expect(response).to redirect_to("https://jooraccess.com/")
+      end
+
+      # TODO user agent test that the right url record is redirected to
+      it "" do
         expect(response).to redirect_to("https://jooraccess.com/")
       end
 

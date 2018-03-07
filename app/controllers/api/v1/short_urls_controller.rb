@@ -6,16 +6,13 @@ module Api::V1
     def create
       url = Url.create!(url_params)
       short_url = ShortUrl.for_url(url).first
+      # TODO refactor logic by making a custom short_url getter
       if short_url.present?
-        # TODO fix this awkward association
-        url.short_url = short_url
         short_url.urls << url
         json_response(short_url)
       else
         short_address = url.shortened
         short_url = ShortUrl.create(short_address: short_address)
-        # TODO fix this awkward association
-        url.short_url = short_url
         short_url.urls << url
         json_response(short_url, :created)
       end
