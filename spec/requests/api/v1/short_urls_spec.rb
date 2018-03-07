@@ -6,7 +6,7 @@ require "support/request_spec_helper"
 describe "Short Url API", type: :request do
   include RequestSpecHelper
 
-  describe "POST /short_urls" do
+  describe "POST api/v1/short_urls" do
     let(:valid_attributes) do
       { full_address: "https://jooraccess.com/", device_type: "mobile" }
     end
@@ -53,7 +53,7 @@ describe "Short Url API", type: :request do
     end
   end
 
-  describe "GET /:friendly_id" do
+  describe "GET api/v1/:friendly_id" do
     let(:short_url_with_one_target) { create(:short_url_with_targets) }
     let(:mobile_url) { create(:url, id: 2, device_type: "mobile") }
 
@@ -93,13 +93,13 @@ describe "Short Url API", type: :request do
     end
   end
 
-  describe "GET /short_urls" do
+  describe "GET api/v1/short_urls" do
     context "when the records exist" do
       before do
         (1..2).to_a.each do |id|
           ShortUrl.create(short_address: "#{id}")
         end
-       get short_urls_path
+        get(api_v1_short_urls_path)
       end
 
       it "returns shorened urls" do
@@ -114,7 +114,7 @@ describe "Short Url API", type: :request do
 
     context "when no records exist" do
       it "returns status code 204" do
-        get short_urls_path
+        get(api_v1_short_urls_path)
         expect(response).to have_http_status(204)
       end
     end
