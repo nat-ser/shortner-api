@@ -7,8 +7,9 @@ describe "Short Url API", type: :request do
   include RequestSpecHelper
 
   describe "POST api/v1/short_urls" do
+    let(:full_address) { "https://jooraccess.com/" }
     let(:valid_attributes) do
-      { full_address: "https://jooraccess.com/", device_type: "mobile" }
+      { full_address: full_address, device_type: "mobile" }
     end
 
     context "when the request is valid and there is no existing short url" do
@@ -20,7 +21,7 @@ describe "Short Url API", type: :request do
       end
 
       it "creates an association between created url and shortened url" do
-        url = Url.last
+        url = Url.find_by(full_address: full_address)
         short_url = ShortUrl.last
         expect(url.short_url).to eq(short_url)
         expect(short_url.urls.include?(url)).to eq(true)
@@ -32,13 +33,21 @@ describe "Short Url API", type: :request do
     end
 
     context "when the request is valid and there is an existing short url" do
+      let!(:short_url_with_targets) { create(:short_url_with_targets) }
+
       before do
-        create(:short_url_with_targets)
         post api_v1_short_urls_path, params: valid_attributes
       end
 
       it "creates a short url" do
         expect(json["short_address"]).to eq("1")
+      end
+
+      it "creates an association between created url and shortened url" do
+        url = Url.find_by(full_address: full_address, device_type: "mobile")
+
+        expect(url.short_url).to eq(short_url_with_targets)
+        expect(short_url_with_targets.urls.include?(url)).to eq(true)
       end
 
       it "returns status code 201" do
