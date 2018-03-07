@@ -75,7 +75,8 @@ describe "Short Url API", type: :request do
 
     before do
       short_url_with_one_target.urls << mobile_url
-      get(api_v1_friendly_path(friendly_id))
+      get api_v1_friendly_path(friendly_id),
+        headers: { "HTTP_USER_AGENT": "mobile" }
     end
 
     context "when the record exists" do
@@ -85,10 +86,9 @@ describe "Short Url API", type: :request do
         expect(response).to redirect_to("https://jooraccess.com/")
       end
 
-      # TODO: user agent test that the right url record is redirected to
       it "increments the redirect count for the target url" do
         target_urls = short_url_with_one_target.urls
-        target_url = target_urls.find { |x| x.device_type == "desktop" }
+        target_url = target_urls.find { |x| x.device_type == "mobile" }
         expect(target_url.redirect_count).to eq(1)
       end
 
