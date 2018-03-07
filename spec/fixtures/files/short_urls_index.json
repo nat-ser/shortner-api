@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "short_address": "1",
+    "hours_since_creation": 157776.0,
+    "created_at": "1990-01-01T05:00:00.000Z",
+    "updated_at": "1990-01-01T05:00:00.000Z",
+    "urls": [
+      {
+        "id": 1,
+        "short_url_id": 1,
+        "full_address": "https://twin_peaks.com",
+        "device_type": "mobile",
+        "redirect_count": 1,
+        "created_at": "1990-01-01T05:00:00.000Z",
+        "updated_at": "1990-01-01T05:00:00.000Z"
+      },
+      {
+        "id": 3,
+        "short_url_id": 1,
+        "full_address": "https://twin_peaks.com",
+        "device_type": "tablet",
+        "redirect_count": 1,
+        "created_at": "2008-01-01T05:00:00.000Z",
+        "updated_at": "2008-01-01T05:00:00.000Z"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "short_address": "2",
+    "hours_since_creation": 157776.0,
+    "created_at": "1990-01-01T05:00:00.000Z",
+    "updated_at": "1990-01-01T05:00:00.000Z",
+    "urls": [
+      {
+        "id": 2,
+        "short_url_id": 2,
+        "full_address": "https://steak.com",
+        "device_type": "desktop",
+        "redirect_count": 0,
+        "created_at": "1990-01-01T05:00:00.000Z",
+        "updated_at": "1990-01-01T05:00:00.000Z"
+      },
+      {
+        "id": 4,
+        "short_url_id": 2,
+        "full_address": "https://steak.com",
+        "device_type": "tablet",
+        "redirect_count": 0,
+        "created_at": "2008-01-01T05:00:00.000Z",
+        "updated_at": "2008-01-01T05:00:00.000Z"
+      }
+    ]
+  }
+]

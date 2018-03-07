@@ -3,9 +3,9 @@
 class ShortUrlSerializer < ActiveModel::Serializer
   attributes :id,
              :short_address,
+             :hours_since_creation,
              :created_at,
-             :updated_at,
-             :hours_since_creation
+             :updated_at
 
   has_many :urls
 
