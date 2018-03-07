@@ -16,7 +16,7 @@ class ShortUrl < ApplicationRecord
 
   validates :short_address, presence: true
 
-  # this application level validation is here for clarity but has no functional purpose
+  # this validation is here for clarity only but has no functional purpose
   # not necessary due to shortening algorithm based on url id
   validates :short_address, uniqueness: true
 

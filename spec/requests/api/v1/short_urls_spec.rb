@@ -85,9 +85,10 @@ describe "Short Url API", type: :request do
         expect(response).to redirect_to("https://jooraccess.com/")
       end
 
-      # TODO user agent test that the right url record is redirected to
+      # TODO: user agent test that the right url record is redirected to
       it "increments the redirect count for the target url" do
-        target_url = short_url_with_one_target.urls.find { |x| x.device_type == "desktop" }
+        target_urls = short_url_with_one_target.urls
+        target_url = target_urls.find { |x| x.device_type == "desktop" }
         expect(target_url.redirect_count).to eq(1)
       end
 
