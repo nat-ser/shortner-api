@@ -75,8 +75,6 @@ describe "Short Url API", type: :request do
 
     before do
       short_url_with_one_target.urls << mobile_url
-      # request.env["HTTP_USER_AGENT"] = "iPhone"
-      # get(friendly_path(friendly_id), nil, "HTTP_USER_AGENT": "iPhone")
       get(api_v1_friendly_path(friendly_id))
     end
 
@@ -88,12 +86,9 @@ describe "Short Url API", type: :request do
       end
 
       # TODO user agent test that the right url record is redirected to
-      it "" do
-        expect(response).to redirect_to("https://jooraccess.com/")
-      end
-
-      it "increments the redirect count for the url" do
-        expect(short_url_with_one_target.urls.first.redirect_count).to eq(1)
+      it "increments the redirect count for the target url" do
+        target_url = short_url_with_one_target.urls.find { |x| x.device_type == "desktop" }
+        expect(target_url.redirect_count).to eq(1)
       end
 
       it "returns status code 301" do

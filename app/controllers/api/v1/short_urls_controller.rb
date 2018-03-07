@@ -31,14 +31,14 @@ module Api::V1
       short_url = ShortUrl.find_by!(short_address: params[:friendly_id])
       device_type = request.variant.first.to_s
       url = short_url.urls.find { |x| x.device_type == device_type }
-      url.redirect_count += 1
+      url.increment_redirect_count
       redirect_to url.full_address, status: :moved_permanently
     end
 
     private
 
     def url_params
-      params.permit(:short_url_id, :full_address, :device_type, url_ids: {})
+      params.permit(:short_url, :full_address, :device_type)
     end
 
     def detect_device_format
