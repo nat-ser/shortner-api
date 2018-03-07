@@ -19,7 +19,7 @@ class Url < ApplicationRecord
 
   validates :full_address, :device_type, presence: true
 
-  def shortened
+  def shortened_address
     id.to_s(36)
   end
 

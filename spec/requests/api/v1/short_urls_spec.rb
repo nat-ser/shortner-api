@@ -17,10 +17,10 @@ describe "Short Url API", type: :request do
 
       it "creates a short url" do
         # `json` is a custom helper to parse JSON responses
-        expect(json["short_address"]).to eq(Url.last.shortened)
+        expect(json["short_address"]).to eq(Url.last.shortened_address)
       end
 
-      it "creates an association between created url and shortened url" do
+      it "creates an association between created url and shortened_address url" do
         url = Url.find_by(full_address: full_address, device_type: "mobile")
         short_url = ShortUrl.last
         expect(url.short_url).to eq(short_url)
@@ -43,7 +43,7 @@ describe "Short Url API", type: :request do
         expect(json["short_address"]).to eq("1")
       end
 
-      it "creates an association between created url and shortened url" do
+      it "creates an association between created url and shortened_address url" do
         url = Url.find_by(full_address: full_address, device_type: "mobile")
 
         expect(url.short_url).to eq(short_url_with_targets)

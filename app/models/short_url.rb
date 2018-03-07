@@ -10,7 +10,7 @@
 #  updated_at    :datetime         not null
 #
 
-# shortened url that redirects to target url based on device type
+# shortened_address url that redirects to target url based on device type
 class ShortUrl < ApplicationRecord
   has_many :urls, dependent: :destroy
 
@@ -18,7 +18,7 @@ class ShortUrl < ApplicationRecord
   # not necessary due to shortening algorithm based on url id
   validates :short_address, uniqueness: true
 
-  def self.for_full_address(url)
+  def self.existing_url_for_full_address(url)
     joins(:urls).where(urls: { full_address: url.full_address }).first
   end
 end

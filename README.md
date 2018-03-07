@@ -3,9 +3,9 @@
 url
 - full_address: string, null: false
 
-has_many :shortened_urls
+has_many :shortened_address_urls
 
-shortened_url
+shortened_address_url
 validates :uniqueness, true
 
 - address: string, null: false

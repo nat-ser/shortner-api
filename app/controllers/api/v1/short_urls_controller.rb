@@ -3,15 +3,13 @@
 module Api
   module V1
     class ShortUrlsController < ApplicationController
-      before_action :detect_device_format, only: [:show]
-
       def create
         url = Url.create!(url_params)
-        short_url = ShortUrl.for_full_address(url)
+        short_url = ShortUrl.existing_url_for_full_address(url)
         if short_url.present?
           status = :ok
         else
-          short_address = url.shortened
+          short_address = url.shortened_address
           short_url = ShortUrl.create(short_address: short_address)
           status = :created
         end
@@ -30,7 +28,6 @@ module Api
 
       def show
         short_url = ShortUrl.find_by!(short_address: params[:friendly_id])
-        device_type = request.variant.first.to_s
         url = short_url.urls.find { |x| x.device_type == device_type }
         url.increment_redirect_count
         redirect_to url.full_address, status: :moved_permanently
@@ -42,21 +39,21 @@ module Api
         params.permit(:short_url, :full_address, :device_type)
       end
 
-      def detect_device_format
-        request.variant = case request.user_agent
-                          when /iPad/i
-                            :tablet
-                          when /iPhone/i
-                            :mobile
-                          when /Android/i && /mobile/i
-                            :mobile
-                          when /Android/i
-                            :tablet
-                          when /Windows Phone/i
-                            :mobile
-                          else
-                            :desktop
-                          end
+      def device_type
+        case request.user_agent
+        when /Android/i && /mobile/i
+          "mobile"
+        when /iPhone/i
+          "mobile"
+        when /Windows Phone/i
+          "mobile"
+        when /iPad/i
+          "tablet"
+        when /Android/i
+          "tablet"
+        else
+          "desktop"
+          end
       end
     end
   end
