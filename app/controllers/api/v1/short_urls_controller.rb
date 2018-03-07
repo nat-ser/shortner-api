@@ -6,9 +6,7 @@ module Api
       def create
         url = Url.create!(url_params)
         short_url = ShortUrl.existing_url_for_full_address(url)
-        if short_url.present?
-          status = :ok
-        else
+        unless short_url.present?
           short_address = url.shortened_address
           short_url = ShortUrl.create(short_address: short_address)
           status = :created
@@ -39,13 +37,10 @@ module Api
         params.permit(:short_url, :full_address, :device_type)
       end
 
+      # very simplified method - more of a proof of concept
       def device_type
         case request.user_agent
-        when /Android/i && /mobile/i
-          "mobile"
-        when /iPhone/i
-          "mobile"
-        when /Windows Phone/i
+        when /mobile/i
           "mobile"
         when /iPad/i
           "tablet"
@@ -53,7 +48,7 @@ module Api
           "tablet"
         else
           "desktop"
-          end
+        end
       end
     end
   end

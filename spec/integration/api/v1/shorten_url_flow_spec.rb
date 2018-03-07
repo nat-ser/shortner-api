@@ -3,7 +3,7 @@
 require "rails_helper"
 require "support/request_spec_helper"
 
-describe "POST /short_urls, GET /friendly_id, and POST /short_urls requests", type: :request do
+describe "request flow to index and show actions", type: :request do
   include RequestSpecHelper
 
   let(:first_created_twin_peak_url_attrs) do
@@ -31,7 +31,7 @@ describe "POST /short_urls, GET /friendly_id, and POST /short_urls requests", ty
     }
   end
 
-  it "produce expected index response after flow completion" do
+  it "produces expected index response at completion" do
     Timecop.freeze(Time.local(1990))
     post api_v1_short_urls_path, params: first_created_twin_peak_url_attrs
     post api_v1_short_urls_path, params: first_created_steak_url_attrs

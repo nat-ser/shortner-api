@@ -11,7 +11,8 @@ describe ShortUrl, type: :model do
     it "returns any other short urls for the same full url address" do
       short_url.urls << desktop_url
 
-      expect(ShortUrl.existing_url_for_full_address(mobile_url)).to eq(short_url)
+      existing_short_url = ShortUrl.existing_url_for_full_address(mobile_url)
+      expect(existing_short_url).to eq(short_url)
     end
   end
 end
