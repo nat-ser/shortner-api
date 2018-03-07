@@ -20,7 +20,8 @@ Style/StringLiterals:
 
 Style/Documentation:
   Exclude:
-    - app/controllers/*
+    - app/controllers/api/v1/*
+    - app/serializers/*
 
 Metrics/BlockLength:
   Exclude:

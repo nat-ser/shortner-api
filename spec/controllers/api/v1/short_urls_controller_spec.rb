@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe ShortUrlsController, type: :controller do
+RSpec.describe Api::V1::ShortUrlsController, type: :controller do
   describe "GET #index" do
     it "returns http success" do
       get :index
@@ -13,6 +13,13 @@ RSpec.describe ShortUrlsController, type: :controller do
   describe "GET #show" do
     it "returns http success" do
       get :show
+      expect(response).to have_http_status(:moved_permanently)
+    end
+  end
+
+  describe "POST #index" do
+    it "returns http success" do
+      post :index
       expect(response).to have_http_status(:success)
     end
   end

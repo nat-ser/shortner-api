@@ -22,4 +22,8 @@ class Url < ApplicationRecord
   def shortened
     id.to_s(36)
   end
+
+  def increment_redirect_count
+    increment!(:redirect_count)
+  end
 end
