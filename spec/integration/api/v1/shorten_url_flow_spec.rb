@@ -32,7 +32,6 @@ describe "Shortening flow", type: :request do
       }
     end
 
-
     it "conducts flow" do
       Timecop.freeze(Time.local(1990))
       post api_v1_short_urls_path, params: first_created_twin_peak_url_attrs
@@ -42,9 +41,9 @@ describe "Shortening flow", type: :request do
       post api_v1_short_urls_path, params: twin_peak_url_attrs
       post api_v1_short_urls_path, params: steak_url_attrs
       get api_v1_friendly_path("1"),
-        headers: { "HTTP_USER_AGENT": "mobile" }
+          headers: { "HTTP_USER_AGENT": "mobile" }
       get api_v1_friendly_path("1"),
-        headers: { "HTTP_USER_AGENT": "Android" }
+          headers: { "HTTP_USER_AGENT": "Android" }
 
       get api_v1_short_urls_path
 

@@ -14,15 +14,11 @@
 class ShortUrl < ApplicationRecord
   has_many :urls, dependent: :destroy
 
-  validates :short_address, presence: true
-
   # this validation is here for clarity only but has no functional purpose
   # not necessary due to shortening algorithm based on url id
   validates :short_address, uniqueness: true
 
-  accepts_nested_attributes_for :urls
-
-  def self.for_url(url)
-    joins(:urls).where(urls: { full_address: url.full_address })
+  def self.for_full_address(url)
+    joins(:urls).where(urls: { full_address: url.full_address }).first
   end
 end

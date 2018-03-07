@@ -71,12 +71,12 @@ describe "Short Url API", type: :request do
 
   describe "GET api/v1/:friendly_id" do
     let(:short_url_with_one_target) { create(:short_url_with_targets) }
-    let(:mobile_url) { create(:url, id: 2, device_type: "mobile") }
+    let(:mobile_url) { create(:url, device_type: "mobile") }
 
     before do
       short_url_with_one_target.urls << mobile_url
       get api_v1_friendly_path(friendly_id),
-        headers: { "HTTP_USER_AGENT": "mobile" }
+          headers: { "HTTP_USER_AGENT": "mobile" }
     end
 
     context "when the record exists" do
@@ -114,7 +114,7 @@ describe "Short Url API", type: :request do
     context "when the records exist" do
       before do
         (1..2).to_a.each do |id|
-          ShortUrl.create(short_address: "#{id}")
+          ShortUrl.create(short_address: id.to_s)
         end
         get(api_v1_short_urls_path)
       end

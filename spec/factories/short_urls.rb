@@ -10,7 +10,6 @@ FactoryBot.define do
     end
   end
   factory :url do
-    id { 1 }
     full_address { "https://jooraccess.com/" }
     device_type { "desktop" }
   end

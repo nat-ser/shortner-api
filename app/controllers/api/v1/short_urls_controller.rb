@@ -7,17 +7,16 @@ module Api
 
       def create
         url = Url.create!(url_params)
-        short_url = ShortUrl.for_url(url).first
-        # TODO: refactor logic by making a custom short_url getter
+        short_url = ShortUrl.for_full_address(url)
         if short_url.present?
-          short_url.urls << url
-          json_response(short_url)
+          status = :ok
         else
           short_address = url.shortened
           short_url = ShortUrl.create(short_address: short_address)
-          short_url.urls << url
-          json_response(short_url, :created)
+          status = :created
         end
+        short_url.urls << url
+        json_response(short_url, status)
       end
 
       def index
