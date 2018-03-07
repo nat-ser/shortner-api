@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "short_address": "1",
+    "created_at": "2018-03-06T00:36:13.321Z",
+    "updated_at": "2018-03-06T00:36:13.321Z",
+    "hours_since_creation": 2.5,
+    "urls": [
+      {
+        "id": 1,
+        "full_address":
+        "device_type":
+        "redirect_count":
+        "created_at":
+        "updated_at":
+      },
+      {
+        "id": 10,
+        "full_address":
+        "device_type":
+        "redirect_count":
+        "created_at":
+        "updated_at":
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "short_address": "2",
+    "created_at": "2018-03-06T00:36:13.327Z",
+    "updated_at": "2018-03-06T00:36:13.327Z",
+    "hours_since_creation": 2.5,
+    "urls": [
+      {
+        "id": 2
+        "full_address":
+        "device_type":
+        "redirect_count":
+        "created_at":
+        "updated_at":
+      },
+      {
+        "id": 12
+        "full_address":
+        "device_type":
+        "redirect_count":
+        "created_at":
+        "updated_at":
+      }
+    ]
+  }
+]

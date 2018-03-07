@@ -12,7 +12,7 @@ describe "Short Url API", type: :request do
     end
 
     context "when the request is valid and there is no existing short url" do
-      before { post "/short_urls", params: valid_attributes }
+      before { post short_urls_path, params: valid_attributes }
 
       it "creates a short url" do
         # `json` is a custom helper to parse JSON responses
@@ -27,7 +27,7 @@ describe "Short Url API", type: :request do
     context "when the request is valid and there is an existing short url" do
       before do
         create(:short_url_with_targets)
-        post "/short_urls", params: valid_attributes
+        post short_urls_path, params: valid_attributes
       end
 
       it "creates a short url" do
@@ -40,7 +40,7 @@ describe "Short Url API", type: :request do
     end
 
     context "when the request is invalid" do
-      before { post "/short_urls", params: { device_type: "mobile" } }
+      before { post short_urls_path, params: { device_type: "mobile" } }
 
       it "returns status code 422" do
         expect(response).to have_http_status(422)
@@ -59,15 +59,20 @@ describe "Short Url API", type: :request do
 
     before do
       short_url_with_one_target.urls << mobile_url
-      get "/#{friendly_id}"
+      # request.env["HTTP_USER_AGENT"] = "iPhone"
+      # get(friendly_path(friendly_id), nil, "HTTP_USER_AGENT": "iPhone")
+      get(friendly_path(friendly_id))
     end
 
     context "when the record exists" do
       let(:friendly_id) { "1" }
 
-      it "returns the url" do
-        request.env["HTTP_USER_AGENT"] = "iPhone"
+      it "redirects to the target url" do
         expect(response).to redirect_to("https://jooraccess.com/")
+      end
+
+      it "increments the redirect count for the url" do
+        expect(short_url_with_one_target.urls.first.redirect_count).to eq(1)
       end
 
       it "returns status code 301" do
@@ -91,28 +96,15 @@ describe "Short Url API", type: :request do
   describe "GET /short_urls" do
     context "when the records exist" do
       before do
-        (1..4).to_a.each do |id|
-          desktop_url = create(
-            :url, id: id,
-            full_address: Faker::Internet.url,
-            device_type: "desktop"
-          )
-          mobile_url = create(
-            :url,
-            id: (id + 10),
-            full_address: Faker::Internet.url,
-            device_type: "mobile"
-          )
-          shortened_url = create(:short_url, short_address: desktop_url.shortened)
-          shortened_url.urls << mobile_url
-          shortened_url.urls << desktop_url
+        (1..2).to_a.each do |id|
+          ShortUrl.create(short_address: "#{id}")
         end
-       get "/short_urls"
+       get short_urls_path
       end
 
       it "returns shorened urls" do
         expect(json).not_to be_empty
-        expect(json.size).to eq(4)
+        expect(json.size).to eq(2)
       end
 
       it "returns status code 200" do
@@ -122,7 +114,7 @@ describe "Short Url API", type: :request do
 
     context "when no records exist" do
       it "returns status code 204" do
-        get "/short_urls"
+        get short_urls_path
         expect(response).to have_http_status(204)
       end
     end
